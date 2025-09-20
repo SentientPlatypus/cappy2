@@ -175,7 +175,7 @@ const ImageCarousel = () => {
       {/* Fixed title & controls */}
       <div
         className={`fixed top-20 left-1/2 -translate-x-1/2 text-center z-30 transition-opacity duration-300 ${
-          isGalleryActive && activeIndex < images.length - 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          isGalleryActive && activeIndex < images.length - 1 && showCarousel ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
         <h2 className="text-4xl font-bold font-pixel text-white mb-4"
