@@ -230,24 +230,6 @@ const ImageCarousel = () => {
         </div>
       </div>
 
-      {/* Fixed progress indicator */}
-      <div
-        className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-30 transition-opacity duration-300 ${
-          isGalleryActive ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="bg-background/80 backdrop-blur-sm rounded-full px-6 py-3 border border-border">
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-muted-foreground">Progress:</span>
-            <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
-              <div ref={progressBarRef} className="h-full bg-gradient-to-r from-primary to-accent" style={{ width: '0%' }} />
-            </div>
-            <span className="text-sm text-foreground font-mono">
-              {activeIndex + 1} / {images.length}
-            </span>
-          </div>
-        </div>
-      </div>
     </section>
   );
 };
