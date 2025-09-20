@@ -167,7 +167,7 @@ const ImageCarousel = () => {
       ref={sectionRef}
       data-section="carousel"
       className="h-[200vh] relative"
-      style={{ backgroundColor: '#192e3a' }}
+      style={{ backgroundColor: '#0a1925' }}
     >
       {/* Fixed title & controls */}
       <div
