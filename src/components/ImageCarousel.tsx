@@ -189,15 +189,6 @@ const ImageCarousel = () => {
            style={{ imageRendering: 'pixelated' }}>
           Keep scrolling to see the horizontal carousel in action
         </p>
-        <button
-          onClick={skipGallery}
-          className="bg-secondary/80 hover:bg-secondary text-secondary-foreground px-6 py-3 rounded-full transition-all duration-200 hover:scale-105 backdrop-blur-sm border border-border"
-        >
-          <div className="flex items-center space-x-2">
-            <span>Skip Gallery</span>
-            <ChevronDown size={18} />
-          </div>
-        </button>
       </div>
 
       {/* Sticky viewport */}
