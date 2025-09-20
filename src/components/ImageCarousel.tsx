@@ -14,6 +14,7 @@ import carousel3 from '@/assets/carousel-3.jpg';
 import carousel4 from '@/assets/carousel-4.jpg';
 import carousel5 from '@/assets/carousel-5.jpg';
 import carousel6 from '@/assets/carousel-6.jpg';
+import undergroundBg from '@/assets/8bit-underground.png';
 
 const images = [carousel1, carousel2, carousel3, carousel4, carousel5, carousel6];
 
@@ -166,7 +167,14 @@ const ImageCarousel = () => {
     <section
       ref={sectionRef}
       data-section="carousel"
-      className="h-[200vh] relative bg-gradient-to-b from-background to-card"
+      className="h-[200vh] relative"
+      style={{
+        backgroundImage: `url(${undergroundBg})`,
+        backgroundSize: 'auto 100%',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'repeat-x',
+        imageRendering: 'pixelated'
+      }}
     >
       {/* Fixed title & controls */}
       <div
@@ -174,10 +182,15 @@ const ImageCarousel = () => {
           isGalleryActive ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-4">
+        <h2 className="text-4xl font-bold font-pixel text-white mb-4"
+            style={{ 
+              textShadow: '4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000',
+              imageRendering: 'pixelated'
+            }}>
           Scroll to Explore Gallery
         </h2>
-        <p className="text-muted-foreground mb-6">
+        <p className="text-white font-pixel mb-6 bg-black/60 px-4 py-2 rounded-xl"
+           style={{ imageRendering: 'pixelated' }}>
           Keep scrolling to see the horizontal carousel in action
         </p>
         <button
