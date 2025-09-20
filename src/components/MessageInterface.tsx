@@ -425,10 +425,10 @@ const MessageInterface = () => {
                   const words = message.text.split(' ');
                   return (
                     <div key={message.id} className="w-full mb-6 animate-fade-in">
-                      <div className="ai-content-card">
-                        <p className={`text-lg leading-relaxed transition-all duration-300 ${
+                      <div className="ai-content-card border-2 border-primary/30">
+                        <p className={`text-lg leading-relaxed transition-all duration-300 font-pixel text-white ${
                           isSpeaking ? 'opacity-100' : 'opacity-100'
-                        }`}>
+                        }`} style={{ imageRendering: 'pixelated' }}>
                           {words.map((word, wordIdx) => {
                             const isCurrentWord = isSpeaking && wordIdx === currentWordIndex;
                             return (
@@ -452,8 +452,10 @@ const MessageInterface = () => {
                   // Regular center message (older AI messages)
                   return (
                     <div key={message.id} className="w-full animate-fade-in">
-                      <div className="glass-card p-6 rounded-2xl text-muted-foreground">
-                        <p className="text-base leading-relaxed">{message.text}</p>
+                      <div className="glass-card p-6 rounded-2xl border-2 border-primary/20">
+                        <p className="text-base leading-relaxed font-pixel text-white" style={{ imageRendering: 'pixelated' }}>
+                          {message.text}
+                        </p>
                       </div>
                     </div>
                   );
@@ -466,14 +468,17 @@ const MessageInterface = () => {
                   className={`flex ${message.sender === 'right' ? 'justify-end' : 'justify-start'} animate-fade-in`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className={`${message.sender === 'left' ? 'message-bubble-left' : 'message-bubble-right'} relative group hover:scale-105 transition-all duration-300`}>
-                    <p className="text-base leading-relaxed">{message.text}</p>
+                  <div className={`${message.sender === 'left' ? 'message-bubble-left border-2 border-primary/30' : 'message-bubble-right border-2 border-accent/30'} relative group hover:scale-105 transition-all duration-300`}>
+                    <p className="text-base leading-relaxed font-pixel" style={{ imageRendering: 'pixelated' }}>
+                      {message.text}
+                    </p>
                     <div className="flex items-center justify-between mt-3">
-                      <span className="text-xs opacity-70">
+                      <span className="text-xs opacity-70 font-pixel" style={{ imageRendering: 'pixelated' }}>
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {message.truthVerification !== undefined && (
-                        <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs border backdrop-blur-sm ${truthUtils.getVerificationColor(message.truthVerification)}`}>
+                        <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-xs border backdrop-blur-sm font-pixel ${truthUtils.getVerificationColor(message.truthVerification)}`}
+                             style={{ imageRendering: 'pixelated' }}>
                           {message.truthVerification === true && <Shield size={12} />}
                           {message.truthVerification === false && <AlertTriangle size={12} />}
                           {message.truthVerification === null && <Clock size={12} />}
