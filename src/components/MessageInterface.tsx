@@ -498,25 +498,6 @@ const MessageInterface = () => {
             <div ref={messagesEndRef} />
           </div>
           
-          {/* Premium Input Section */}
-          <div className="flex space-x-4 mb-6">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={`TYPE AS ${currentSender === 'left' ? 'PERSON A' : 'PERSON B'}...`}
-              className="flex-1 premium-input text-foreground placeholder-muted-foreground text-lg font-pixel"
-              style={{ imageRendering: 'pixelated' }}
-            />
-            <button
-              onClick={handleSend}
-              className="hero-button flex items-center justify-center min-w-[80px] text-lg hover:scale-110 transition-all duration-300 font-pixel"
-              style={{ imageRendering: 'pixelated' }}
-            >
-              <Send size={24} />
-            </button>
-          </div>
           
           {/* CAP CHECK Button - Direct Action */}
           <div className="text-center mb-6">
