@@ -66,20 +66,23 @@ const ImageCarousel = () => {
         const sectionHeight = sectionRef.current.offsetHeight;
 
         // Visibility controls (update state only when value changes)
-        const shouldShowCarousel = rect.top < windowHeight * 0.8;
+        const shouldBeActive = rect.top <= 0 && rect.bottom >= windowHeight * 0.5;
+        const shouldShowCarousel = shouldBeActive; // Only show carousel when scroll text is active
+        
         if (shouldShowCarousel !== showCarouselRef.current) {
           showCarouselRef.current = shouldShowCarousel;
           setShowCarousel(shouldShowCarousel);
         }
 
-        const shouldBeActive = rect.top <= 0 && rect.bottom >= windowHeight * 0.5;
-        if (shouldBeActive !== isGalleryActiveRef.current) {
-          isGalleryActiveRef.current = shouldBeActive;
-          setIsGalleryActive(shouldBeActive);
+        // Progress bar should disappear when we scroll completely past the section
+        const shouldShowProgress = rect.bottom > 0 && rect.top <= 0;
+        if (shouldShowProgress !== isGalleryActiveRef.current) {
+          isGalleryActiveRef.current = shouldShowProgress;
+          setIsGalleryActive(shouldShowProgress);
         }
 
         // Bail out early when the carousel isn't in its sticky active window
-        if (!shouldBeActive) {
+        if (!shouldShowCarousel) {
           return;
         }
 
