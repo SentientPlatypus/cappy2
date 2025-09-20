@@ -17,6 +17,7 @@
 import { useEffect, useState } from 'react';
 import { ChevronDown, X } from 'lucide-react';
 import { chatActions } from '@/lib/globalState';
+import backgroundImage from '@/assets/8bit-background.png';
 
 const HeroSection = () => {
   // Track scroll position for parallax effects
@@ -157,14 +158,19 @@ const HeroSection = () => {
     <>
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
         <div 
-          className="absolute inset-0 bg-gradient-to-br from-background via-card to-background"
+          className="absolute inset-0"
           style={{
-            background: `
-              radial-gradient(circle at 30% 40%, hsl(15, 85%, 65%, 0.15) 0%, transparent 50%),
-              radial-gradient(circle at 70% 60%, hsl(25, 90%, 70%, 0.1) 0%, transparent 50%),
-              linear-gradient(135deg, hsl(220, 26%, 4%) 0%, hsl(220, 26%, 8%) 100%)
-            `
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'repeat-x',
+            imageRendering: 'pixelated'
           }}
+        />
+        
+        {/* 8-bit style overlay for better text readability */}
+        <div 
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/80"
         />
         
         <div 
@@ -175,26 +181,28 @@ const HeroSection = () => {
             transition: 'all 0.1s ease-out'
           }}
         >
-          <h1 className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-6xl md:text-8xl font-pixel mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent drop-shadow-lg">
             Cap Check
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Experience AI-powered fact-checking technology that detects lies and verifies truth in real-time conversations.
+          <p className="text-xl md:text-2xl font-pixel text-foreground mb-12 max-w-2xl mx-auto drop-shadow-lg">
+            8-BIT AI FACT-CHECKER • RETRO ENTERTAINMENT HACKATHON
           </p>
           
           <div className="flex justify-center space-x-4">
             <button
               onClick={startCapCheck}
-              className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-red-400/50 flex items-center space-x-2 shadow-lg shadow-red-500/25"
+              className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-pixel px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-red-400/50 flex items-center space-x-2 shadow-lg shadow-red-500/25 text-lg"
+              style={{ imageRendering: 'pixelated' }}
             >
-              <span className="font-bold text-lg">Start Here</span>
+              <span className="font-bold">START HERE</span>
               <ChevronDown size={20} />
             </button>
             <button
               onClick={scrollToCarousel}
-              className="bg-secondary/80 hover:bg-secondary text-secondary-foreground px-6 py-4 rounded-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-border flex items-center space-x-2"
+              className="bg-secondary/80 hover:bg-secondary text-secondary-foreground font-pixel px-6 py-4 rounded-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-border flex items-center space-x-2"
+              style={{ imageRendering: 'pixelated' }}
             >
-              <span>View Gallery</span>
+              <span>VIEW GALLERY</span>
               <ChevronDown size={20} />
             </button>
           </div>
@@ -228,20 +236,20 @@ const HeroSection = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
           <div className="bg-background/95 backdrop-blur-md rounded-2xl p-12 border border-border shadow-2xl max-w-md w-full mx-4 animate-scale-in">
             <div className="text-center">
-              <h1 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-6xl font-bold font-pixel mb-8 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
                 CAP CHECK
               </h1>
               
               <div className="mb-8">
-                <div className={`inline-block px-12 py-6 rounded-2xl text-6xl font-bold border-4 transition-all duration-200 ease-in-out ${
+                <div className={`inline-block px-12 py-6 rounded-2xl text-6xl font-bold font-pixel border-4 transition-all duration-200 ease-in-out ${
                   flashingValue ? 'bg-green-500/20 text-green-400 border-green-500' : 'bg-red-500/20 text-red-400 border-red-500'
-                }`}>
+                }`} style={{ imageRendering: 'pixelated' }}>
                   {flashingValue ? 'TRUE' : 'FALSE'}
                 </div>
               </div>
               
-              <p className="text-muted-foreground text-lg">
-                AI Analysis in Progress...
+              <p className="text-muted-foreground text-lg font-pixel">
+                AI ANALYSIS IN PROGRESS...
               </p>
             </div>
           </div>
