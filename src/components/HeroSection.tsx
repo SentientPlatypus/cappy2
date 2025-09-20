@@ -181,10 +181,15 @@ const HeroSection = () => {
             transition: 'all 0.1s ease-out'
           }}
         >
-          <h1 className="text-6xl md:text-8xl font-pixel mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent drop-shadow-lg">
+          <h1 className="text-6xl md:text-8xl font-pixel mb-8 text-white drop-shadow-lg" 
+              style={{ 
+                textShadow: '4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000',
+                imageRendering: 'pixelated'
+              }}>
             Cap Check
           </h1>
-          <p className="text-xl md:text-2xl font-pixel text-foreground mb-12 max-w-2xl mx-auto drop-shadow-lg">
+          <p className="text-xl md:text-2xl font-pixel text-white mb-12 max-w-2xl mx-auto bg-black/60 px-6 py-3 rounded-2xl border-2 border-primary/50 backdrop-blur-sm"
+             style={{ imageRendering: 'pixelated' }}>
             8-BIT AI FACT-CHECKER • RETRO ENTERTAINMENT HACKATHON
           </p>
           
