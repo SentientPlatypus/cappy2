@@ -182,9 +182,9 @@ const HeroSection = () => {
         }}>
             Cap Check
           </h1>
-          <p className="text-xl md:text-2xl font-pixel text-white mb-12 max-w-2xl mx-auto bg-black/60 px-6 py-3 rounded-2xl border-2 border-primary/50 backdrop-blur-sm" style={{
+          <p style={{
           imageRendering: 'pixelated'
-        }}>AI FACT-CHECKER
+        }} className="text-xl md:text-2xl font-pixel text-white mb-12 max-w-2xl mx-auto bg-black/60 px-6 py-3 rounded-2xl border-2 border-primary/50 backdrop-blur-sm text-center">AI FACT-CHECKER
 Debate Game
 
         </p>
