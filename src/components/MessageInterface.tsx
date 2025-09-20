@@ -312,7 +312,11 @@ const MessageInterface = () => {
             <div className={`ai-status-card mx-auto max-w-md ${
               capCheckResult ? 'ai-status-true' : 'ai-status-false'
             } animate-glow-pulse`}>
-              <div className="text-6xl md:text-7xl font-black tracking-tight mb-2">
+              <div className="text-6xl md:text-7xl font-pixel tracking-tight mb-2"
+                   style={{ 
+                     textShadow: '4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000',
+                     imageRendering: 'pixelated'
+                   }}>
                 AI: {capCheckResult ? 'TRUE' : 'FALSE'}
               </div>
             </div>
@@ -323,10 +327,12 @@ const MessageInterface = () => {
                     <div className="w-8 h-8 rounded-full bg-destructive flex items-center justify-center">
                       <span className="text-xl">⚠️</span>
                     </div>
-                    <p className="text-2xl font-bold text-destructive">DECEPTION DETECTED</p>
+                    <p className="text-2xl font-pixel text-destructive" style={{ imageRendering: 'pixelated' }}>
+                      DECEPTION DETECTED
+                    </p>
                   </div>
-                  <p className="text-destructive/80 text-lg leading-relaxed">
-                    Statement flagged as potentially false or misleading
+                  <p className="text-destructive/80 text-lg font-pixel leading-relaxed" style={{ imageRendering: 'pixelated' }}>
+                    STATEMENT FLAGGED AS POTENTIALLY FALSE OR MISLEADING
                   </p>
                 </div>
               </div>
@@ -340,7 +346,11 @@ const MessageInterface = () => {
             <div className={`ai-status-card ${
               capCheckResult ? 'ai-status-true' : 'ai-status-false'
             } animate-glow-pulse px-6 py-3`}>
-              <div className="text-2xl md:text-3xl font-black tracking-tight">
+              <div className="text-2xl md:text-3xl font-pixel tracking-tight"
+                   style={{ 
+                     textShadow: '2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000',
+                     imageRendering: 'pixelated'
+                   }}>
                 AI: {capCheckResult ? 'TRUE' : 'FALSE'}
               </div>
             </div>
@@ -351,10 +361,12 @@ const MessageInterface = () => {
                     <div className="w-6 h-6 rounded-full bg-destructive flex items-center justify-center">
                       <span className="text-sm">⚠️</span>
                     </div>
-                    <p className="text-lg font-bold text-destructive">DECEPTION DETECTED</p>
+                    <p className="text-lg font-pixel text-destructive" style={{ imageRendering: 'pixelated' }}>
+                      DECEPTION DETECTED
+                    </p>
                   </div>
-                  <p className="text-destructive/80 text-sm">
-                    Statement flagged as potentially false or misleading
+                  <p className="text-destructive/80 text-sm font-pixel" style={{ imageRendering: 'pixelated' }}>
+                    STATEMENT FLAGGED AS POTENTIALLY FALSE OR MISLEADING
                   </p>
                 </div>
               </div>
@@ -365,31 +377,37 @@ const MessageInterface = () => {
         {/* Premium Communication Interface */}
         <div className="glass-card rounded-3xl p-10 shadow-2xl border border-border/20">
           <div className="text-center mb-10">
-            <h2 className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
-              Real-time Communication
+            <h2 className="text-4xl md:text-5xl font-pixel mb-6 text-white animate-slide-up"
+                style={{ 
+                  textShadow: '4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000',
+                  imageRendering: 'pixelated'
+                }}>
+              REAL-TIME COMMUNICATION
             </h2>
 
             {/* Premium Person Selector */}
             <div className="flex justify-center space-x-6 mb-10">
               <button
                 onClick={() => setCurrentSender('left')}
-                className={`px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${
+                className={`px-8 py-4 rounded-2xl text-lg font-pixel transition-all duration-300 border-2 ${
                   currentSender === 'left'
-                    ? 'premium-button animate-glow-pulse'
-                    : 'glass-card hover:scale-105'
+                    ? 'bg-primary text-primary-foreground border-primary animate-glow-pulse'
+                    : 'glass-card hover:scale-105 text-white border-primary/30 hover:bg-primary/20'
                 }`}
+                style={{ imageRendering: 'pixelated' }}
               >
-                Person A
+                PERSON A
               </button>
               <button
                 onClick={() => setCurrentSender('right')}
-                className={`px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 ${
+                className={`px-8 py-4 rounded-2xl text-lg font-pixel transition-all duration-300 border-2 ${
                   currentSender === 'right'
-                    ? 'premium-button animate-glow-pulse'
-                    : 'glass-card hover:scale-105'
+                    ? 'bg-primary text-primary-foreground border-primary animate-glow-pulse'
+                    : 'glass-card hover:scale-105 text-white border-primary/30 hover:bg-primary/20'
                 }`}
+                style={{ imageRendering: 'pixelated' }}
               >
-                Person B
+                PERSON B
               </button>
             </div>
           </div>
@@ -487,12 +505,14 @@ const MessageInterface = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={`Type as ${currentSender === 'left' ? 'Person A' : 'Person B'}...`}
-              className="flex-1 premium-input text-foreground placeholder-muted-foreground text-lg"
+              placeholder={`TYPE AS ${currentSender === 'left' ? 'PERSON A' : 'PERSON B'}...`}
+              className="flex-1 premium-input text-foreground placeholder-muted-foreground text-lg font-pixel"
+              style={{ imageRendering: 'pixelated' }}
             />
             <button
               onClick={handleSend}
-              className="premium-button flex items-center justify-center min-w-[80px] text-lg hover:scale-110 transition-all duration-300"
+              className="hero-button flex items-center justify-center min-w-[80px] text-lg hover:scale-110 transition-all duration-300 font-pixel"
+              style={{ imageRendering: 'pixelated' }}
             >
               <Send size={24} />
             </button>
@@ -502,12 +522,17 @@ const MessageInterface = () => {
           <div className="text-center mb-6">
             <button
               onClick={handleCapCheck}
-              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border-2 border-orange-400/30"
+              className="px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-pixel text-xl rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border-2 border-red-400/50"
+              style={{ 
+                textShadow: '2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000',
+                imageRendering: 'pixelated'
+              }}
             >
-              🚨 Start Here
+              🚨 START HERE
             </button>
-            <p className="text-sm text-muted-foreground mt-2">
-              AI-powered fact checking with backend verification
+            <p className="text-sm font-pixel text-white mt-2 bg-black/60 px-4 py-2 rounded-xl border border-primary/30 inline-block"
+               style={{ imageRendering: 'pixelated' }}>
+              AI-POWERED FACT CHECKING WITH BACKEND VERIFICATION
             </p>
           </div>
         </div>
@@ -516,22 +541,27 @@ const MessageInterface = () => {
       {/* CAP CHECK Modal - Exact same as home page */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-background/95 backdrop-blur-md rounded-2xl p-12 border border-border shadow-2xl max-w-md w-full mx-4 animate-scale-in">
+          <div className="bg-background/95 backdrop-blur-md rounded-2xl p-12 border border-primary/50 shadow-2xl max-w-md w-full mx-4 animate-scale-in">
             <div className="text-center">
-              <h1 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-6xl font-pixel mb-8 text-white"
+                  style={{ 
+                    textShadow: '4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000',
+                    imageRendering: 'pixelated'
+                  }}>
                 CAP CHECK
               </h1>
               
               <div className="mb-8">
-                <div className={`inline-block px-12 py-6 rounded-2xl text-6xl font-bold border-4 transition-all duration-200 ease-in-out ${
+                <div className={`inline-block px-12 py-6 rounded-2xl text-6xl font-pixel border-4 transition-all duration-200 ease-in-out ${
                   flashingValue ? 'bg-green-500/20 text-green-400 border-green-500' : 'bg-red-500/20 text-red-400 border-red-500'
-                }`}>
+                }`} style={{ imageRendering: 'pixelated' }}>
                   {flashingValue ? 'TRUE' : 'FALSE'}
                 </div>
               </div>
               
-              <p className="text-muted-foreground text-lg">
-                AI Analysis in Progress...
+              <p className="text-white font-pixel text-lg bg-black/60 px-4 py-2 rounded-xl border border-primary/30"
+                 style={{ imageRendering: 'pixelated' }}>
+                AI ANALYSIS IN PROGRESS...
               </p>
             </div>
           </div>
