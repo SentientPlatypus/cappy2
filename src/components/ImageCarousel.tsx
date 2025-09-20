@@ -14,7 +14,6 @@ import carousel3 from '@/assets/carousel-3.jpg';
 import carousel4 from '@/assets/carousel-4.jpg';
 import carousel5 from '@/assets/carousel-5.jpg';
 import carousel6 from '@/assets/carousel-6.jpg';
-import undergroundBg from '@/assets/8bit-underground.png';
 
 const images = [carousel1, carousel2, carousel3, carousel4, carousel5, carousel6];
 
@@ -168,13 +167,7 @@ const ImageCarousel = () => {
       ref={sectionRef}
       data-section="carousel"
       className="h-[200vh] relative"
-      style={{
-        backgroundImage: `url(${undergroundBg})`,
-        backgroundSize: 'auto 100%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'repeat-x',
-        imageRendering: 'pixelated'
-      }}
+      style={{ backgroundColor: '#192e3a' }}
     >
       {/* Fixed title & controls */}
       <div
