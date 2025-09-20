@@ -504,7 +504,7 @@ const MessageInterface = () => {
               onClick={handleCapCheck}
               className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-xl rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border-2 border-orange-400/30"
             >
-              🚨 CAP CHECK
+              🚨 Start Here
             </button>
             <p className="text-sm text-muted-foreground mt-2">
               AI-powered fact checking with backend verification

@@ -176,7 +176,7 @@ const HeroSection = () => {
           }}
         >
           <h1 className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Interactive
+            Cap Check
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto">
             Experience AI-powered fact-checking technology that detects lies and verifies truth in real-time conversations.
@@ -187,7 +187,7 @@ const HeroSection = () => {
               onClick={startCapCheck}
               className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-red-400/50 flex items-center space-x-2 shadow-lg shadow-red-500/25"
             >
-              <span className="font-bold text-lg">CAP CHECK</span>
+              <span className="font-bold text-lg">Start Here</span>
               <ChevronDown size={20} />
             </button>
             <button
