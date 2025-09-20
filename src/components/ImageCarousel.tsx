@@ -75,7 +75,7 @@ const ImageCarousel = () => {
         }
 
         // Progress bar should disappear when we scroll completely past the section
-        const shouldShowProgress = rect.bottom > 0 && rect.top <= 0;
+        const shouldShowProgress = rect.bottom > windowHeight * 0.2;
         if (shouldShowProgress !== isGalleryActiveRef.current) {
           isGalleryActiveRef.current = shouldShowProgress;
           setIsGalleryActive(shouldShowProgress);
