@@ -233,13 +233,13 @@ const ImageCarousel = () => {
           isGalleryActive ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
-        <div className="bg-black/80 backdrop-blur-sm rounded-xl px-6 py-3 border-2 border-white/20">
+        <div className="bg-background/80 backdrop-blur-sm rounded-full px-6 py-3 border border-border">
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-white font-pixel" style={{ imageRendering: 'pixelated' }}>Progress:</span>
-            <div className="w-32 h-3 bg-gray-800 rounded-sm overflow-hidden border border-white/30">
-              <div ref={progressBarRef} className="h-full bg-gradient-to-r from-green-400 to-blue-400" style={{ width: '0%' }} />
+            <span className="text-sm text-muted-foreground">Progress:</span>
+            <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
+              <div ref={progressBarRef} className="h-full bg-gradient-to-r from-primary to-accent" style={{ width: '0%' }} />
             </div>
-            <span className="text-sm text-white font-pixel" style={{ imageRendering: 'pixelated' }}>
+            <span className="text-sm text-foreground font-mono">
               {activeIndex + 1} / {images.length}
             </span>
           </div>
