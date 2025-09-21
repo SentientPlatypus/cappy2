@@ -86,6 +86,20 @@ const MessageInterface = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [capCheckResult]);
 
+  // Spacebar shortcut for CAP CHECK
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check if spacebar is pressed and not in an input field
+      if (event.code === 'Space' && event.target === document.body) {
+        event.preventDefault();
+        handleCapCheck();
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // Smooth scroll to bottom
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
