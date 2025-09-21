@@ -66,12 +66,12 @@ const MessageInterface = () => {
     const apiKey = localStorage.getItem('ELEVENLABS_API_KEY');
     setHasApiKey(!!apiKey);
 
-    // Fetch AI verification status from backend
-    const fetchVerificationStatus = async () => {
-      const status = await chatActions.fetchAiVerificationStatus();
-      setAiVerificationStatus(status?.verified || false);
-    };
-    fetchVerificationStatus();
+    // // Fetch AI verification status from backend
+    // const fetchVerificationStatus = async () => {
+    //   const status = await chatActions.fetchAiVerificationStatus();
+    //   setAiVerificationStatus(status?.verified || false);
+    // };
+    // fetchVerificationStatus();
   }, []);
 
   // Scroll listener for sticky AI status
