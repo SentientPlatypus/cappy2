@@ -46,59 +46,14 @@ const MessageInterface = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // AI Reader state
-  const [capCheckResult, setCapCheckResult] = useState<boolean | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [hasApiKey, setHasApiKey] = useState(false);
-  const [isStatusSticky, setIsStatusSticky] = useState(false);
-  const statusRef = useRef<HTMLDivElement>(null);
 
-  // AI Verification Status
-  const [aiVerificationStatus, setAiVerificationStatus] = useState<boolean>(false);
-
-  // Modal state for CAP CHECK
-  const [showModal, setShowModal] = useState(false);
-  const [flashingValue, setFlashingValue] = useState(true);
-  const [finalResult, setFinalResult] = useState<boolean | null>(null);
-
-  // Check for API key and fetch AI verification status on mount
+  // Check for API key on mount
   useEffect(() => {
     const apiKey = localStorage.getItem('ELEVENLABS_API_KEY');
     setHasApiKey(!!apiKey);
-
-    // // Fetch AI verification status from backend
-    // const fetchVerificationStatus = async () => {
-    //   const status = await chatActions.fetchAiVerificationStatus();
-    //   setAiVerificationStatus(status?.verified || false);
-    // };
-    // fetchVerificationStatus();
-  }, []);
-
-  // Scroll listener for sticky AI status
-  useEffect(() => {
-    const handleScroll = () => {
-      if (statusRef.current && capCheckResult !== null) {
-        const statusRect = statusRef.current.getBoundingClientRect();
-        const isScrolledPast = statusRect.top < 0;
-        setIsStatusSticky(isScrolledPast);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [capCheckResult]);
-
-  // Spacebar shortcut for CAP CHECK
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      // Check if spacebar is pressed and not in an input field
-      if (event.code === 'Space' && event.target === document.body) {
-        event.preventDefault();
-        handleCapCheck();
-      }
-    };
-    
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Smooth scroll to bottom
@@ -146,15 +101,8 @@ const MessageInterface = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Monitor for CAP CHECK results and AI message events
+  // Monitor for AI message events and Gemini fact-check results
   useEffect(() => {
-    const handleCapCheckResult = (event: CustomEvent) => {
-      setCapCheckResult(event.detail.result);
-    };
-    const handleCapCheckStart = () => {
-      // Use the handleCapCheck function
-      handleCapCheck();
-    };
     const handleStartTextReader = () => {
       // Find the newest AI message (last center message) and speak it
       const centerMessages = messages.filter(m => m.sender === 'center');
@@ -205,14 +153,11 @@ const MessageInterface = () => {
         scrollToBottom();
       }, 100);
     };
-    window.addEventListener('capCheckResult', handleCapCheckResult as EventListener);
-    window.addEventListener('capCheckStart', handleCapCheckStart as EventListener);
+
     window.addEventListener('startTextReader', handleStartTextReader as EventListener);
     window.addEventListener('addAiMessage', handleAddAiMessage as EventListener);
     window.addEventListener('gemini-fact-check', handleGeminiFactCheck as EventListener);
     return () => {
-      window.removeEventListener('capCheckResult', handleCapCheckResult as EventListener);
-      window.removeEventListener('capCheckStart', handleCapCheckStart as EventListener);
       window.removeEventListener('startTextReader', handleStartTextReader as EventListener);
       window.removeEventListener('addAiMessage', handleAddAiMessage as EventListener);
       window.removeEventListener('gemini-fact-check', handleGeminiFactCheck as EventListener);
@@ -240,83 +185,6 @@ const MessageInterface = () => {
       localStorage.setItem('ELEVENLABS_API_KEY', key);
       setHasApiKey(true);
     }
-  };
-
-  // Handle CAP CHECK - simplified version with centered colored messages
-  const handleCapCheck = () => {
-    const timestamp = Date.now();
-
-    // Add CAP Check message
-    const capCheckMessage: Message = {
-      id: `cap-check-${timestamp}`,
-      text: 'CAP Check',
-      sender: 'left',
-      timestamp: new Date()
-    };
-
-    // Add ANALYZING message
-    const analyzingMessage: Message = {
-      id: `analyzing-${timestamp + 1}`,
-      text: '⚠️ ANALYZING...',
-      sender: 'center',
-      timestamp: new Date()
-    };
-    setMessages(prev => [...prev, capCheckMessage, analyzingMessage]);
-
-    // Show the CAP CHECK modal and start flashing
-    setShowModal(true);
-    setFlashingValue(true);
-
-    // Faster flashing between True/False (every 300ms)
-    let fadeCount = 0;
-    const fadeInterval = setInterval(() => {
-      setFlashingValue(prev => !prev);
-      fadeCount++;
-      if (fadeCount >= 6) {
-        // 2 seconds of flashing (6 * 300ms = 1.8s)
-        clearInterval(fadeInterval);
-        
-        // Randomly select result: CAP (false), SUS (null), or FACT (true)
-        const randomResult = Math.random();
-        let result: boolean | null;
-        let resultText: string;
-        let explanation: string;
-        
-        if (randomResult < 0.6) {
-          // 60% chance for CAP (false)
-          result = false;
-          resultText = "🚨 CAP";
-          explanation = "Statement flagged as false or misleading. Multiple sources contradict this claim.";
-        } else if (randomResult < 0.8) {
-          // 20% chance for SUS (null)
-          result = null;
-          resultText = "⚠️ SUS";
-          explanation = "Statement requires further verification. Insufficient evidence to confirm accuracy.";
-        } else {
-          // 20% chance for FACT (true)
-          result = true;
-          resultText = "✅ FACT";
-          explanation = "Statement verified as accurate. Multiple reliable sources support this claim.";
-        }
-        
-        setFlashingValue(result);
-        setFinalResult(result);
-        setCapCheckResult(result);
-
-        // Close modal and add result to chat after showing final result
-        setTimeout(() => {
-          setShowModal(false);
-          const resultMessage: Message = {
-            id: `result-${timestamp + 2}`,
-            text: `${resultText}\n${explanation}`,
-            sender: 'center',
-            timestamp: new Date(),
-            truthVerification: result
-          };
-          setMessages(prev => [...prev, resultMessage]);
-        }, 1000);
-      }
-    }, 300);
   };
   const handleSend = () => {
     if (!input.trim()) return;
@@ -591,45 +459,8 @@ const MessageInterface = () => {
               </div>}
             <div ref={messagesEndRef} />
           </div>
-          
-          
-          {/* CAP CHECK Button - Direct Action */}
-          <div className="text-center mb-6">
-            <button onClick={handleCapCheck} className="px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-pixel text-xl rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border-2 border-red-400/50" style={{
-            textShadow: '2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000',
-            imageRendering: 'pixelated'
-          }}>🚨 CAP CHECK 🚨</button>
-          </div>
         </div>
       </div>
-
-      {/* CAP CHECK Modal - Exact same as home page */}
-      {showModal && <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-background/95 backdrop-blur-md rounded-2xl p-16 border border-primary/50 shadow-2xl max-w-2xl w-full mx-4 animate-scale-in">
-            <div className="text-center">
-              <h1 className="text-4xl md:text-6xl font-pixel mb-8 text-white" style={{
-            textShadow: '4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000',
-            imageRendering: 'pixelated'
-          }}>
-                CAP CHECK
-              </h1>
-              
-              <div className="mb-8">
-                <div className={`inline-block px-12 py-6 rounded-2xl text-6xl font-pixel border-4 transition-all duration-200 ease-in-out ${flashingValue ? 'bg-green-500/20 text-green-400 border-green-500' : 'bg-red-500/20 text-red-400 border-red-500'}`} style={{
-              imageRendering: 'pixelated'
-            }}>
-                  {flashingValue ? 'TRUE' : 'FALSE'}
-                </div>
-              </div>
-              
-              <p className="text-white font-pixel text-lg bg-black/60 px-4 py-2 rounded-xl border border-primary/30" style={{
-            imageRendering: 'pixelated'
-          }}>
-                AI ANALYSIS IN PROGRESS...
-              </p>
-            </div>
-          </div>
-        </div>}
     </section>;
 };
 export default MessageInterface;
