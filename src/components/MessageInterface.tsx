@@ -135,23 +135,33 @@ const MessageInterface = () => {
       // Map speaker to person display
       const personLabel = speaker === 'Speaker A' ? 'Person A' : 'Person B';
       
-      // Format the message to include all information
-      const displayText = `${verdict}\n${personLabel}\n\n${explanation}`;
-      
-      const newMessage: Message = {
-        id: Date.now().toString(),
-        text: displayText,
+      // Add analyzing message first
+      const analyzingMessage: Message = {
+        id: `analyzing-${Date.now()}`,
+        text: '🔍 ANALYZING STATEMENT...',
         sender: 'center',
-        timestamp: new Date(),
-        truthVerification: verdict === 'FACT' ? true : verdict === 'CAP' ? false : null
+        timestamp: new Date()
       };
       
-      setMessages(prev => [...prev, newMessage]);
+      setMessages(prev => [...prev, analyzingMessage]);
       
-      // Scroll to bottom to show the new fact-check result
+      // Add the fact-check result after a delay with animation
       setTimeout(() => {
-        scrollToBottom();
-      }, 100);
+        const factCheckMessage: Message = {
+          id: `fact-check-${Date.now()}`,
+          text: JSON.stringify({ verdict, personLabel, explanation, isFactCheck: true }),
+          sender: 'center',
+          timestamp: new Date(),
+          truthVerification: verdict === 'FACT' ? true : verdict === 'CAP' ? false : null
+        };
+        
+        setMessages(prev => [...prev, factCheckMessage]);
+        
+        // Scroll to bottom to show the new fact-check result
+        setTimeout(() => {
+          scrollToBottom();
+        }, 100);
+      }, 1500);
     };
 
     window.addEventListener('startTextReader', handleStartTextReader as EventListener);
@@ -341,11 +351,90 @@ const MessageInterface = () => {
           <div className="h-64 overflow-y-auto mb-8 space-y-6 scrollbar-thin border border-border/40 rounded-xl p-4 bg-black/10">
             {messages.map((message, index) => {
             if (message.sender === 'center') {
-              // Check if this is a CAP CHECK result message
+              // Check if this is a Gemini fact-check result
+              let factCheckData = null;
+              try {
+                factCheckData = JSON.parse(message.text);
+                if (factCheckData.isFactCheck) {
+                  // Render animated fact-check result
+                  const { verdict, personLabel, explanation } = factCheckData;
+                  
+                  let bgColor, borderColor, textColor, icon;
+                  if (verdict === 'FACT') {
+                    bgColor = 'bg-green-500/20';
+                    borderColor = 'border-green-500';
+                    textColor = 'text-green-400';
+                    icon = '✅';
+                  } else if (verdict === 'CAP') {
+                    bgColor = 'bg-red-500/20';
+                    borderColor = 'border-red-500';
+                    textColor = 'text-red-400';
+                    icon = '🚨';
+                  } else {
+                    bgColor = 'bg-yellow-500/20';
+                    borderColor = 'border-yellow-500';
+                    textColor = 'text-yellow-400';
+                    icon = '⚠️';
+                  }
+                  
+                  return <div key={message.id} className="w-full animate-scale-in" style={{
+                    animationDelay: '0.2s'
+                  }}>
+                    <div className={`${bgColor} ${borderColor} p-6 rounded-2xl border-2 backdrop-blur-sm shadow-lg animate-fade-in hover:scale-105 transition-all duration-300 mx-auto max-w-lg`}>
+                      {/* Verdict Header */}
+                      <div className="text-center mb-4">
+                        <div className={`inline-flex items-center space-x-3 px-6 py-3 rounded-xl ${bgColor} ${borderColor} border-2 animate-pulse`}>
+                          <span className="text-3xl animate-bounce">{icon}</span>
+                          <span className={`text-2xl font-pixel ${textColor}`} style={{
+                            imageRendering: 'pixelated',
+                            textShadow: '2px 2px 0px #000'
+                          }}>
+                            {verdict}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Speaker */}
+                      <div className="text-center mb-4">
+                        <span className="text-lg font-pixel text-white bg-black/40 px-4 py-2 rounded-lg border border-primary/30" style={{
+                          imageRendering: 'pixelated'
+                        }}>
+                          {personLabel}
+                        </span>
+                      </div>
+                      
+                      {/* Explanation */}
+                      <div className="bg-black/40 p-4 rounded-xl border border-primary/20">
+                        <p className="text-sm leading-relaxed font-pixel text-white/90" style={{
+                          imageRendering: 'pixelated'
+                        }}>
+                          {explanation}
+                        </p>
+                      </div>
+                      
+                      {/* Timestamp */}
+                      <div className="text-center mt-4">
+                        <span className="text-xs opacity-70 font-pixel" style={{
+                          imageRendering: 'pixelated'
+                        }}>
+                          {message.timestamp.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                      </div>
+                    </div>
+                  </div>;
+                }
+              } catch (e) {
+                // Not JSON, continue with regular handling
+              }
+              
+              // Check if this is a legacy CAP CHECK result message
               const isCapResult = message.text.includes('🚨 CAP') || message.text.includes('⚠️ SUS') || message.text.includes('✅ FACT');
               
               if (isCapResult) {
-                // CAP CHECK result with color coding
+                // Legacy CAP CHECK result with color coding
                 const lines = message.text.split('\n');
                 const resultLine = lines[0];
                 const explanationLine = lines[1] || '';
