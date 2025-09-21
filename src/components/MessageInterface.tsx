@@ -178,15 +178,40 @@ const MessageInterface = () => {
         scrollToBottom();
       }, 100);
     };
+
+    // Handle Gemini fact-check results
+    const handleGeminiFactCheck = (event: CustomEvent) => {
+      const { speaker, verdict, explanation } = event.detail;
+      
+      // Map speaker to person
+      const personLabel = speaker === 'Speaker A' ? 'Person A' : 'Person B';
+      
+      const newMessage: Message = {
+        id: Date.now().toString(),
+        text: `${verdict}: ${personLabel} - ${explanation}`,
+        sender: 'center',
+        timestamp: new Date(),
+        truthVerification: verdict === 'FACT' ? true : verdict === 'CAP' ? false : null
+      };
+      
+      setMessages(prev => [...prev, newMessage]);
+      
+      // Scroll to bottom to show the new fact-check result
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+    };
     window.addEventListener('capCheckResult', handleCapCheckResult as EventListener);
     window.addEventListener('capCheckStart', handleCapCheckStart as EventListener);
     window.addEventListener('startTextReader', handleStartTextReader as EventListener);
     window.addEventListener('addAiMessage', handleAddAiMessage as EventListener);
+    window.addEventListener('gemini-fact-check', handleGeminiFactCheck as EventListener);
     return () => {
       window.removeEventListener('capCheckResult', handleCapCheckResult as EventListener);
       window.removeEventListener('capCheckStart', handleCapCheckStart as EventListener);
       window.removeEventListener('startTextReader', handleStartTextReader as EventListener);
       window.removeEventListener('addAiMessage', handleAddAiMessage as EventListener);
+      window.removeEventListener('gemini-fact-check', handleGeminiFactCheck as EventListener);
     };
   }, []);
 
