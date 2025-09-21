@@ -181,14 +181,18 @@ const MessageInterface = () => {
 
     // Handle Gemini fact-check results
     const handleGeminiFactCheck = (event: CustomEvent) => {
+      console.log("Received gemini-fact-check event:", event.detail);
       const { speaker, verdict, explanation } = event.detail;
       
-      // Map speaker to person
+      // Map speaker to person display
       const personLabel = speaker === 'Speaker A' ? 'Person A' : 'Person B';
+      
+      // Format the message to include all information
+      const displayText = `${verdict}\n${personLabel}\n\n${explanation}`;
       
       const newMessage: Message = {
         id: Date.now().toString(),
-        text: `${verdict}: ${personLabel} - ${explanation}`,
+        text: displayText,
         sender: 'center',
         timestamp: new Date(),
         truthVerification: verdict === 'FACT' ? true : verdict === 'CAP' ? false : null

@@ -171,25 +171,18 @@ function TranscriptLogger() {
           console.log("API:", data);
           
           // Parse the Gemini response and dispatch event
-          if (data && typeof data === 'string') {
-            try {
-              // Extract the JSON part from the response string
-              const jsonMatch = data.match(/\{[^}]+\}/);
-              if (jsonMatch) {
-                const factCheckData = JSON.parse(jsonMatch[0]);
-                
-                // Dispatch custom event with fact-check data
-                window.dispatchEvent(new CustomEvent('gemini-fact-check', {
-                  detail: {
-                    speaker: factCheckData.speaker,
-                    verdict: factCheckData.verdict,
-                    explanation: factCheckData.explanation
-                  }
-                }));
+          if (data && data.speaker && data.verdict && data.explanation) {
+            // Dispatch custom event with fact-check data
+            window.dispatchEvent(new CustomEvent('gemini-fact-check', {
+              detail: {
+                speaker: data.speaker,
+                verdict: data.verdict,
+                explanation: data.explanation
               }
-            } catch (parseError) {
-              console.error("Failed to parse fact-check response:", parseError);
-            }
+            }));
+            console.log("Dispatched gemini-fact-check event with:", data);
+          } else {
+            console.error("Invalid fact-check response format:", data);
           }
         } catch (err) {
           console.error("Fetch Fact Checkerror:", err);
