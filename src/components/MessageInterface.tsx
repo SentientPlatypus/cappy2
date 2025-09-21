@@ -476,11 +476,6 @@ const MessageInterface = () => {
             textShadow: '2px 2px 0px #000, -1px -1px 0px #000, 1px -1px 0px #000, -1px 1px 0px #000',
             imageRendering: 'pixelated'
           }}>🚨 Check CAP 🚨</button>
-            <p className="text-sm font-pixel text-white mt-2 bg-black/60 px-4 py-2 rounded-xl border border-primary/30 inline-block" style={{
-            imageRendering: 'pixelated'
-          }}>
-              AI-POWERED FACT CHECKING WITH BACKEND VERIFICATION
-            </p>
           </div>
         </div>
       </div>
