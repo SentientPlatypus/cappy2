@@ -198,7 +198,7 @@ const MessageInterface = () => {
     }
   };
 
-  // Handle CAP CHECK - exact same as home page
+  // Handle CAP CHECK - simplified version with centered colored messages
   const handleCapCheck = () => {
     const timestamp = Date.now();
 
@@ -214,7 +214,7 @@ const MessageInterface = () => {
     const analyzingMessage: Message = {
       id: `analyzing-${timestamp + 1}`,
       text: '⚠️ ANALYZING...',
-      sender: 'left',
+      sender: 'center',
       timestamp: new Date()
     };
     setMessages(prev => [...prev, capCheckMessage, analyzingMessage]);
@@ -231,7 +231,30 @@ const MessageInterface = () => {
       if (fadeCount >= 6) {
         // 2 seconds of flashing (6 * 300ms = 1.8s)
         clearInterval(fadeInterval);
-        const result = false; // Default to false as requested
+        
+        // Randomly select result: CAP (false), SUS (null), or FACT (true)
+        const randomResult = Math.random();
+        let result: boolean | null;
+        let resultText: string;
+        let explanation: string;
+        
+        if (randomResult < 0.6) {
+          // 60% chance for CAP (false)
+          result = false;
+          resultText = "🚨 CAP";
+          explanation = "Statement flagged as false or misleading. Multiple sources contradict this claim.";
+        } else if (randomResult < 0.8) {
+          // 20% chance for SUS (null)
+          result = null;
+          resultText = "⚠️ SUS";
+          explanation = "Statement requires further verification. Insufficient evidence to confirm accuracy.";
+        } else {
+          // 20% chance for FACT (true)
+          result = true;
+          resultText = "✅ FACT";
+          explanation = "Statement verified as accurate. Multiple reliable sources support this claim.";
+        }
+        
         setFlashingValue(result);
         setFinalResult(result);
         setCapCheckResult(result);
@@ -241,10 +264,10 @@ const MessageInterface = () => {
           setShowModal(false);
           const resultMessage: Message = {
             id: `result-${timestamp + 2}`,
-            text: `Verification Result: FLAGGED AS FALSE - Statement contains potential misinformation`,
+            text: `${resultText}\n${explanation}`,
             sender: 'center',
             timestamp: new Date(),
-            truthVerification: false
+            truthVerification: result
           };
           setMessages(prev => [...prev, resultMessage]);
         }, 1000);
@@ -393,10 +416,49 @@ const MessageInterface = () => {
           <div className="h-64 overflow-y-auto mb-8 space-y-6 scrollbar-thin">
             {messages.map((message, index) => {
             if (message.sender === 'center') {
+              // Check if this is a CAP CHECK result message
+              const isCapResult = message.text.includes('🚨 CAP') || message.text.includes('⚠️ SUS') || message.text.includes('✅ FACT');
+              
+              if (isCapResult) {
+                // CAP CHECK result with color coding
+                const lines = message.text.split('\n');
+                const resultLine = lines[0];
+                const explanationLine = lines[1] || '';
+                
+                let bgColor = 'bg-red-500/20';
+                let borderColor = 'border-red-500';
+                let textColor = 'text-red-400';
+                
+                if (resultLine.includes('SUS')) {
+                  bgColor = 'bg-yellow-500/20';
+                  borderColor = 'border-yellow-500';
+                  textColor = 'text-yellow-400';
+                } else if (resultLine.includes('FACT')) {
+                  bgColor = 'bg-green-500/20';
+                  borderColor = 'border-green-500';
+                  textColor = 'text-green-400';
+                }
+                
+                return <div key={message.id} className="w-full flex justify-center mb-6 animate-fade-in">
+                      <div className={`${bgColor} ${borderColor} border-2 p-6 rounded-2xl max-w-md text-center`}>
+                        <p className={`text-2xl font-pixel ${textColor} mb-2`} style={{
+                      imageRendering: 'pixelated'
+                    }}>
+                          {resultLine}
+                        </p>
+                        {explanationLine && <p className="text-sm font-pixel text-white/80 leading-relaxed" style={{
+                      imageRendering: 'pixelated'
+                    }}>
+                          {explanationLine}
+                        </p>}
+                      </div>
+                    </div>;
+              }
+              
               // Find the last center message to apply highlighting to the newest AI prompt
               const centerMessages = messages.filter(m => m.sender === 'center');
               const isNewestAiMessage = message === centerMessages[centerMessages.length - 1];
-              if (isNewestAiMessage) {
+              if (isNewestAiMessage && !isCapResult) {
                 // AI Content with premium highlighting (newest AI message)
                 const words = message.text.split(' ');
                 return <div key={message.id} className="w-full mb-6 animate-fade-in">
